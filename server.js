@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const questionRoutes = require("./routes/questionFormRoute");
 const authenticationRoute = require("./routes/AuthenticationRoute");
 const correctAnswerRoute = require("./routes/correct_answer") 
+const profilePicRoute = require("./routes/Profile/ProfilePicRoute")
 const isAuth = require("./middlewares/auth")
 
 // Initialize app
@@ -13,7 +14,7 @@ const app = express();
 app.use(isAuth);
 app.use(express.json()); // Parse JSON
 app.use(cors()); // Handle CORS
-app.use('/images', express.static('uploads/images'));
+app.use('/images', express.static('middlewares/uploads/images'));
 
 // Connect to database
 connectDB();
@@ -24,6 +25,7 @@ connectDB();
 app.use("/api/questions", questionRoutes); // Question endpoints
 app.use("/api/users", authenticationRoute); // Registration endpoints
 app.use("/api/correct_answer", correctAnswerRoute)
+app.use("/profile", profilePicRoute)
 
 // Server
 const PORT = 5000; // Define port directly

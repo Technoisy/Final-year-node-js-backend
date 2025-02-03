@@ -1,12 +1,13 @@
 const express = require("express");
 const Topic = require("../models/questionForm")
 const router = express.Router();
+const User = require("../models/Users")
 
 // Route to calculate test results
 router.post("/checking_answer", async (req, res) => {
   try {
-    const { currentTopicId, answers } = req.body;
-    console.log("answers    :     ", currentTopicId, answers);
+    const { currentTopicId, topicName, answers, userId } = req.body;
+    console.log("answers topicName    :     ", topicName, userId, currentTopicId, answers);
 
     // Validate input
     if (!currentTopicId || !answers || !Array.isArray(answers)) {
@@ -57,6 +58,21 @@ router.post("/checking_answer", async (req, res) => {
     const totalQuestions = answers.length;
     const score = ((correctAnswersCount / totalQuestions) * 100).toFixed(2);
     console.log("score : ", score);
+    
+    await Topic.findOneAndUpdate(
+      { _id: currentTopicId}, // Find the topic & question
+      { $set: { score : score, incorrectAnswers },
+     }, 
+      { new: true } 
+    );
+    
+
+    await User.findOneAndUpdate(
+      { _id: userId }, // Find user by ID
+      { $push: { Tests: { currentTopicId: currentTopicId, topic: topicName } } }, // Push a new object into Tests array
+      { new: true } // Returns updated user document
+    );
+    
 
     res.status(200).json({
       message: "Test result calculated successfully.",

@@ -9,6 +9,8 @@ const questionSchema = mongoose.Schema({
 
 const topicSchema = mongoose.Schema({
   topicName: { type: String, required: true },
+  score : {type : String},
+  incorrectAnswers : {type : []},
   questions: { type: [questionSchema], required: true },
 });
 
