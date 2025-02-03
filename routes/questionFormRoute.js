@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const storage = require("../middlewares/diskStorage")
 
-const { createQuestion, getAllQuestions, getTopic } = require("../controllers/questioFormController");
+const { createQuestion, getAllQuestions, getTopic, getResult } = require("../controllers/questioFormController");
 
 // Configure Multer
 
@@ -29,6 +29,8 @@ router.post("/", upload.single("image"), (req, res, next) => {
   router.get("/getQuestion", getAllQuestions);
 
   router.get("/getTopic", getTopic )
+
+  router.post("/getResult", getResult )
   
   module.exports = router;
   

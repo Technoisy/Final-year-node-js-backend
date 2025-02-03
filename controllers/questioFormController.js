@@ -109,7 +109,25 @@ const getTopic = async (req, res) => {
   }
 };
 
+const getResult = async (req, res) => {
+
+  const {currentTopicId} = req.body
+  console.log("currentTOpidId" , currentTopicId);
+  
+    const testData = await Topic.findOne({ _id : currentTopicId })
+      console.log(testData);
+ 
+
+  const totalQuestions = testData.length;
+  res.status(200).json({
+    message: "Test result calculated successfully.",
+    totalQuestions,
+    correctAnswers: -(testData.incorrectAnswers.length - totalQuestions),
+    incorrectAnswers : testData.incorrectAnswers,
+    score: testData.score,
+  });
+}
 
 
 
-module.exports = { createQuestion, getAllQuestions, getTopic };
+module.exports = { createQuestion, getAllQuestions, getTopic, getResult };
