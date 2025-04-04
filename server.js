@@ -13,7 +13,12 @@ const app = express();
 // Middleware
 app.use(isAuth);
 app.use(express.json()); // Parse JSON
-app.use(cors()); // Handle CORS
+app.use(
+    cors({
+      origin: ["http://localhost:3000","https://final-year-frontend-2c5g-fzy55lkwr-faisal-irfan-s-projects.vercel.app"], // Allowed frontend URL
+      credentials: true, // If sending cookies/auth headers
+    })
+  );
 app.use('/images', express.static('middlewares/uploads/images'));
 
 // Connect to database
